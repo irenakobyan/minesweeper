@@ -1,0 +1,22 @@
+.AllIn {
+    display: flex;
+    justify-content: space-around;
+    width: 40%;
+    margin: auto;
+    flex-wrap: wrap;
+}
+
+.gameInfo {
+  padding: 20px;
+  background: #19a0d9;
+  text-align: center;
+  color: #fff;
+  min-height: 100px;
+  border-radius: 7px;
+  margin: 20px;
+}
+
+.info {
+  display: block;
+  margin-top: 15px;
+}
