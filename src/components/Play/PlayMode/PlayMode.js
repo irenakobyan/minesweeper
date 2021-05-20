@@ -6,9 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 class PlayMode extends React.Component {
   state = {
-    height: 4,
-    width: 4,
-    mines: 2
+    height: 16,
+    width: 16,
+    mines: 40
   };
 
   easyHandler = () => {
@@ -50,7 +50,10 @@ class PlayMode extends React.Component {
               <Button onClick={this.mediumHandler}>Medium</Button>
               <Button onClick={this.hardHandler}>Hard</Button>
           </ButtonGroup>
-          <Board height={this.state.height} width={this.state.width} mines={this.state.mines} />
+            <Board
+            height={this.state.height}
+            width={this.state.width}
+            mines={this.state.mines} />
         </div>
       );
   }
