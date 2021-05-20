@@ -7,8 +7,9 @@ import classes from './Board.module.css';
 export default class Board extends React.Component {
   state = {
    boardData: this.initBoardData(this.props.height, this.props.width, this.props.mines),
-   gameStatus: "Game in progress",
+   gameStatus: "Play Minesweeper",
    mineCount:this.props.mines,
+   clicked: false
  };
 
  getMines(data) {
@@ -76,7 +77,7 @@ createEmptyArray(height, width) {
         neighbour: 0,
         isRevealed: false,
         isEmpty: false,
-        isFlagged: false,
+        isFlagged: false
       };
     }
   }
@@ -188,6 +189,18 @@ traverseBoard(x, y, data) {
    })
  }
 
+ clearBoard() {
+  let updatedData = this.state.boardData;
+  updatedData.map((datarow) => {
+    datarow.map((dataitem) => {
+      dataitem.isRevealed = false;
+    });
+  });
+  this.setState({
+    boardData: updatedData
+  })
+}
+
 //Open on click the neighbour cell(s)
  revealEmpty(x, y, data) {
   let area = this.traverseBoard(x, y, data);
@@ -206,14 +219,22 @@ traverseBoard(x, y, data) {
 //User interactions
 handleCellClick(x, y) {
 
+   if (this.state.clicked == false) {
+      this.setState({
+        clicked: true
+      })
+   }
+
     if (this.state.boardData[x][y].isRevealed || this.state.boardData[x][y].isFlagged) {
       return null;
     }
 
     if (this.state.boardData[x][y].isMine) {
-      this.setState({ gameStatus: "You Lost." });
+      this.setState({
+        gameStatus: "Oops... You Lost." ,
+        clicked: false
+      });
       this.revealBoard();
-      alert("game over");
     }
 
     let updatedData = this.state.boardData;
@@ -228,7 +249,6 @@ handleCellClick(x, y) {
     if (this.getHidden(updatedData).length === this.props.mines) {
       this.setState({ mineCount: 0, gameStatus: "You Win." });
       this.revealBoard();
-      alert("You Win");
     }
 
     this.setState({
@@ -264,7 +284,6 @@ handleCellClick(x, y) {
     if (JSON.stringify(mineArray) === JSON.stringify(flagArray)) {
       this.setState({ mineCount: 0, gameStatus: "You Win." });
       this.revealBoard();
-      alert("You Win");
     }
   }
 
@@ -290,15 +309,33 @@ handleCellClick(x, y) {
   });
 }
 
+handleQuit = () => {
+  this.setState({
+    gameStatus: "You quitted the game",
+    clicked: false
+  })
+  this.revealBoard();
+}
+
+handleRestart = () => {
+  this.setState({
+    clicked: false
+  })
+  this.clearBoard();
+  this.renderBoard(this.state.boardData);
+}
+
   render() {
     return (
       <div className="board">
         <div className={classes.gameInfo}>
           <span className={classes.info}>Mines remaining: {this.state.mineCount}</span>
           <h1 className={classes.info}>{this.state.gameStatus}</h1>
-                  {this.state.time}
+              { this.state.clicked ? <Timer /> : null}
+              <button onClick={this.handleRestart}>Restart</button>
+              <button onClick={this.handleQuit}>Quit</button>
         </div >
-        <Timer />
+
         <div className={classes.AllIn}>
           {
            this.renderBoard(this.state.boardData)

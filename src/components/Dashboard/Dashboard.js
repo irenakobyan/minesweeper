@@ -17,6 +17,12 @@ const columns = [
     width: 90,
   },
   {
+    field: 'time',
+    headerName: 'Time',
+    type: 'number',
+    width: 90,
+  },
+  {
     field: 'fullName',
     headerName: 'Full name',
     description: 'This column has a value getter and is not sortable.',
