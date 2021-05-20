@@ -8,6 +8,7 @@ import {
 import Login from './../Login/Login.js';
 import Dashboard from './../Dashboard/Dashboard.js';
 import Play from './../Play/Play.js';
+import Register from './../Register/Register.js';
 import classes from './Navigation.module.css';
 
 export default function Navigation() {
@@ -19,6 +20,9 @@ export default function Navigation() {
           </Route>
           <Route path="/SignIn">
             <Login />
+          </Route>
+          <Route path="/SignUp">
+            <Register />
           </Route>
           <Route path="/Dashboard">
             <Dashboard />
