@@ -11,20 +11,27 @@ class PlayMode extends React.Component {
     mines: 40
   };
 
-
-  shouldComponentUpdate (nextProps) {
-       if (nextProps.value !== this.props.value) {
-         return true;
-       } else {
-         return false;
-       }
-     }
-
   easyHandler = () => {
     this.setState({
       height: 9,
       width: 9,
       mines: 10
+    })
+  }
+
+  mediumHandler = () => {
+    this.setState({
+      height: 16,
+      width: 16,
+      mines: 40
+    })
+  }
+
+  hardHandler = () => {
+    this.setState({
+      height: 30,
+      width: 16,
+      mines: 99
     })
   }
 
@@ -40,8 +47,8 @@ class PlayMode extends React.Component {
               color="primary"
               aria-label="large outlined primary button group">
               <Button onClick={this.easyHandler}>Easy</Button>
-              <Button >Medium</Button>
-              <Button >Hard</Button>
+              <Button onClick={this.mediumHandler}>Medium</Button>
+              <Button onClick={this.hardHandler}>Hard</Button>
           </ButtonGroup>
           <Board height={this.state.height} width={this.state.width} mines={this.state.mines} />
         </div>

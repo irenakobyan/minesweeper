@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Cell from '../Cell/Cell.js';
+import Timer from '../../Timer/Timer.js'
 import classes from './Board.module.css';
 
 export default class Board extends React.Component {
@@ -8,24 +9,8 @@ export default class Board extends React.Component {
    boardData: this.initBoardData(this.props.height, this.props.width, this.props.mines),
    gameStatus: "Game in progress",
    mineCount:this.props.mines,
-   time: 0,
-   start: 0
  };
 
- startTimer() {
-     this.setState({
-       time: this.state.time,
-       start: Date.now() - this.state.time
-     })
-     this.timer = setInterval(() => this.setState({
-       time: Date.now() - this.state.start
-     }), 1)
-     console.log("start")
-   }
-
-stopTimer = () => {
-clearInterval(this.timer)
-}
  getMines(data) {
   let mineArray = [];
 
@@ -220,7 +205,6 @@ traverseBoard(x, y, data) {
 
 //User interactions
 handleCellClick(x, y) {
-  this.startTimer();
 
     if (this.state.boardData[x][y].isRevealed || this.state.boardData[x][y].isFlagged) {
       return null;
@@ -229,7 +213,6 @@ handleCellClick(x, y) {
     if (this.state.boardData[x][y].isMine) {
       this.setState({ gameStatus: "You Lost." });
       this.revealBoard();
-      this.stopTimer();
       alert("game over");
     }
 
@@ -245,7 +228,6 @@ handleCellClick(x, y) {
     if (this.getHidden(updatedData).length === this.props.mines) {
       this.setState({ mineCount: 0, gameStatus: "You Win." });
       this.revealBoard();
-      this.stopTimer();
       alert("You Win");
     }
 
@@ -316,6 +298,7 @@ handleCellClick(x, y) {
           <h1 className={classes.info}>{this.state.gameStatus}</h1>
                   {this.state.time}
         </div >
+        <Timer />
         <div className={classes.AllIn}>
           {
            this.renderBoard(this.state.boardData)
