@@ -6,9 +6,9 @@ import { makeStyles } from '@material-ui/core/styles';
 
 class PlayMode extends React.Component {
   state = {
-    height: 16,
-    width: 16,
-    mines: 40
+    height: 4,
+    width: 4,
+    mines: 2
   };
 
   easyHandler = () => {

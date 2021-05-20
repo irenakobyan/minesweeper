@@ -2,18 +2,16 @@ import React, {useState,useEffect} from "react";
 import classes from "./Timer.css";
 
 export default function Timer(props) {
-	let [time, setTime] = useState(0);
+	let [time, setTime, timer] = useState(0);
 
-	useEffect(()=>{
-		function incrementTime(){
-			setTimeout(()=>{
+	 const incrementTime = () => {
+		 timer = setTimeout(()=>{
 				let newTime = time +1;
 				setTime(newTime);
 			}, 1000)
 		}
-		incrementTime()
-	}, [time]);
 
+		incrementTime();
 
 return (
 	<div className={classes.timer}>

@@ -2,14 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Cell from '../Cell/Cell.js';
 import Timer from '../../Timer/Timer.js'
+import {
+  Route
+} from "react-router-dom";
 import classes from './Board.module.css';
 
 export default class Board extends React.Component {
   state = {
    boardData: this.initBoardData(this.props.height, this.props.width, this.props.mines),
    gameStatus: "Play Minesweeper",
-   mineCount:this.props.mines,
-   clicked: false
+   mineCount: this.props.mines,
+   clicked: false,
+   win: false
  };
 
  getMines(data) {
@@ -232,7 +236,8 @@ handleCellClick(x, y) {
     if (this.state.boardData[x][y].isMine) {
       this.setState({
         gameStatus: "Oops... You Lost." ,
-        clicked: false
+        clicked: false,
+        win: false
       });
       this.revealBoard();
     }
@@ -247,7 +252,11 @@ handleCellClick(x, y) {
 
 //check if there are hidden mines left and if not finish the game with a win
     if (this.getHidden(updatedData).length === this.props.mines) {
-      this.setState({ mineCount: 0, gameStatus: "You Win." });
+      this.setState({
+        mineCount: 0,
+        gameStatus: "You Win.",
+        win: false
+      });
       this.revealBoard();
     }
 
@@ -282,7 +291,11 @@ handleCellClick(x, y) {
 
 // converts a JavaScript object or value to a JSON string
     if (JSON.stringify(mineArray) === JSON.stringify(flagArray)) {
-      this.setState({ mineCount: 0, gameStatus: "You Win." });
+      this.setState({
+        mineCount: 0,
+        gameStatus: "You Win.",
+        win: false
+      });
       this.revealBoard();
     }
   }
@@ -312,13 +325,14 @@ handleCellClick(x, y) {
 handleQuit = () => {
   this.setState({
     gameStatus: "You quitted the game",
-    clicked: false
+    clicked: false,
   })
   this.revealBoard();
 }
 
 handleRestart = () => {
   this.setState({
+    gameStatus: "Play Minesweeper",
     clicked: false
   })
   this.clearBoard();
@@ -332,8 +346,9 @@ handleRestart = () => {
           <span className={classes.info}>Mines remaining: {this.state.mineCount}</span>
           <h1 className={classes.info}>{this.state.gameStatus}</h1>
               { this.state.clicked ? <Timer /> : null}
-              <button onClick={this.handleRestart}>Restart</button>
-              <button onClick={this.handleQuit}>Quit</button>
+              { this.state.win ? <Route to="/Win"/> : <Route to="/Lost"/>  }
+            <button onClick={this.handleRestart}>Restart</button>
+            <button onClick={this.handleQuit}>Quit</button>
         </div >
 
         <div className={classes.AllIn}>
